@@ -14,13 +14,13 @@ from BaseCPALGC import BaseCPALGC
 from CPALGC import CPALGC
 
 
-def main(exp_num):
-    dataset_name = f'CIE{exp_num}'
+def main(exp_num, n_layer, learning_rate, reg_weight):
+    dataset_name = f'YM{exp_num}'
     ncri_table = {'TA5': 8, 'YM5': 5, 'RB5': 5, 'RA5': 5, 'YP5': 4}
-    n_cri = 3  # ncri_table[dataset_name]
+    n_cri = 5  # ncri_table[dataset_name]
     epoch = 150
     parameter_dict = {
-        'gpu_id': '1',
+        'gpu_id': '0',
         'benchmark_filename': ['tr', 'val', 'ts'],
         'data_path': '',
         'seed': 3,
@@ -35,9 +35,9 @@ def main(exp_num):
         'topk': [5, 10],
         'device': torch.device('cuda'),
         'embedding_size': 64,
-        'n_layers': 2,
-        'learning_rate': 1e-3,
-        'reg_weight': 1e-2,
+        'n_layers': n_layer,  # 2
+        'learning_rate': learning_rate,  # 1e-3
+        'reg_weight': reg_weight,  # 1e-2
         'eval_args': {'split': {'RS': [0.7, 0.1, 0.2]}}
     }
 
@@ -87,7 +87,8 @@ def main(exp_num):
 
     # Model and learning,
     # model (CPA-LGC) loading and initialization
-    model = CPALGC(config, train_data.dataset, n_cri, interaction_matrix).to(config['device'])
+    model = CPALGC(config, train_data.dataset, n_cri,
+                   interaction_matrix).to(config['device'])
     # model = BaseCPALGC(config, train_data.dataset, n_cri).to(config['device'])
 
     # trainer loading and initialization
@@ -97,7 +98,8 @@ def main(exp_num):
     best_valid_score, best_valid_result = trainer.fit(train_data)
 
     # Evaluation
-    results = trainer.evaluate(test_data)
+    # results = trainer.evaluate(test_data)
+    results = trainer.evaluate(valid_data)
     logger.info(results)
 
     print(results)
@@ -108,8 +110,16 @@ def main(exp_num):
 if __name__ == '__main__':
     # main()
 
-    with open("experiment1.txt", "a") as file:
-        for i in range(1, 11):
-            res = main(i)
+    n_layers = [1, 2, 3, 4, 5]
+    learning_rates = [1e-4, 5e-4, 1e-3, 5e-3, 1e-2]
+    reg_weights = [1e-5, 1e-4, 1e-3, 1e-2]
 
-            file.write(res + '\n')
+    with open("test.txt", "a") as file:
+        for n_layer in n_layers:
+            for learning_rate in learning_rates:
+                for reg_weight in reg_weights:
+                    file.write(str(n_layer) + ' : ' + str(learning_rate) + ' : ' + str(reg_weight) + '\n')
+                    for i in range(1, 4):
+                        result = main(i, n_layer, learning_rate, reg_weight)
+
+                        file.write(result + '\n')
