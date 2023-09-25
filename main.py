@@ -118,6 +118,7 @@ if __name__ == '__main__':
             for learning_rate in learning_rates:
                 for reg_weight in reg_weights:
                     file.write(str(n_layer) + ' : ' + str(learning_rate) + ' : ' + str(reg_weight) + '\n')
+                    file.flush()
                     for i in range(1, 4):
                         result = main(i, n_layer, learning_rate, reg_weight)
 
