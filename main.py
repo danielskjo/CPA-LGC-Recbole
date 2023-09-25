@@ -95,7 +95,7 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
     trainer = Trainer(config, model)
 
     # model training
-    best_valid_score, best_valid_result = trainer.fit(train_data, valid_data=valid_data)
+    best_valid_score, best_valid_result = trainer.fit(train_data)
 
     # Evaluation
     results = trainer.evaluate(test_data)
