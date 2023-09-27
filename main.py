@@ -15,7 +15,7 @@ from CPALGC import CPALGC
 
 
 def main(exp_num, n_layer, learning_rate, reg_weight):
-    dataset_name = f'YM{exp_num}'
+    dataset_name = f'YMF{exp_num}'
     ncri_table = {'TA5': 8, 'YM5': 5, 'RB5': 5, 'RA5': 5, 'YP5': 4}
     n_cri = 5  # ncri_table[dataset_name]
     epoch = 150
@@ -38,7 +38,7 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
         'n_layers': n_layer,  # 2
         'learning_rate': learning_rate,  # 1e-3
         'reg_weight': reg_weight,  # 1e-2
-        'eval_args': {'split': {'RS': [0.7, 0.1, 0.2]}}
+        'eval_args': {'split': {'RS': [0.7, 0.15, 0.15]}}
     }
 
     config = Config(model='LightGCN', dataset=dataset_name,
@@ -122,5 +122,5 @@ if __name__ == '__main__':
                     for i in range(1, 4):
                         result = main(i, n_layer, learning_rate, reg_weight)
 
-                        file.write(result + '\n')
+                        file.write(result + '\n\n\n')
                         file.flush()
