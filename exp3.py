@@ -14,7 +14,7 @@ from CPALGC import CPALGC
 
 
 def main(exp_num, n_layer, learning_rate, reg_weight):
-    dataset_name = f'YMFE3{exp_num}'
+    dataset_name = f'YME3{exp_num}'
     ncri_table = {'TA5': 8, 'YM5': 5, 'RB5': 5, 'RA5': 5, 'YP5': 4}
     n_cri = 5  # ncri_table[dataset_name]
     epoch = 150
