@@ -119,8 +119,7 @@ if __name__ == '__main__':
 
                     for i in range(1, 4):
                         result = main(i, n_layer, learning_rate, reg_weight)
-
-                        file.write(result['precision@5'] + ', ' + result['precision@10'] +
-                                   ', ' + result['recall@5'] + ', ' + result['recall@10'] + '\n')
+                        
+                        file.write(result + '\n')
 
                     file.flush()
