@@ -10,17 +10,16 @@ from recbole.utils import init_seed, init_logger
 from recbole.model.general_recommender import *
 import scipy.sparse as sp
 
-from BaseCPALGC import BaseCPALGC
 from CPALGC import CPALGC
 
 
 def main(exp_num, n_layer, learning_rate, reg_weight):
-    dataset_name = f'YMF{exp_num}'
+    dataset_name = f'YMFE3{exp_num}'
     ncri_table = {'TA5': 8, 'YM5': 5, 'RB5': 5, 'RA5': 5, 'YP5': 4}
     n_cri = 5  # ncri_table[dataset_name]
     epoch = 150
     parameter_dict = {
-        'gpu_id': '0',
+        'gpu_id': '1',
         'benchmark_filename': ['tr', 'val', 'ts'],
         'data_path': '',
         'seed': 3,
@@ -89,7 +88,6 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
     # model (CPA-LGC) loading and initialization
     model = CPALGC(config, train_data.dataset, n_cri,
                    interaction_matrix).to(config['device'])
-    # model = BaseCPALGC(config, train_data.dataset, n_cri).to(config['device'])
 
     # trainer loading and initialization
     trainer = Trainer(config, model)
@@ -98,8 +96,8 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
     best_valid_score, best_valid_result = trainer.fit(train_data)
 
     # Evaluation
-    results = trainer.evaluate(test_data)
-    # results = trainer.evaluate(valid_data)
+    results = trainer.evaluate(valid_data)
+    # results = trainer.evaluate(test_data)
     logger.info(results)
 
     print(results)
@@ -108,20 +106,21 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
 
 
 if __name__ == '__main__':
-    # main()
-
     n_layers = [1, 2, 3, 4, 5]
     learning_rates = [1e-4, 5e-4, 1e-3, 5e-3, 1e-2]
     reg_weights = [1e-5, 1e-4, 1e-3, 1e-2]
 
-    with open("base.txt", "a") as file:
+    with open("exp3.txt", "a") as file:
         for n_layer in n_layers:
             for learning_rate in learning_rates:
                 for reg_weight in reg_weights:
-                    file.write('\n\n' + str(n_layer) + ' : ' + str(learning_rate) + ' : ' + str(reg_weight) + '\n')
-                    file.flush()
+                    file.write('\n\n' + str(n_layer) + ' : ' +
+                               str(learning_rate) + ' : ' + str(reg_weight) + '\n')
+
                     for i in range(1, 4):
                         result = main(i, n_layer, learning_rate, reg_weight)
 
-                        file.write(result)
-                        file.flush()
+                        file.write(result['precision@5'] + ', ' + result['precision@10'] +
+                                   ', ' + result['recall@5'] + ', ' + result['recall@10'] + '\n')
+
+                    file.flush()
