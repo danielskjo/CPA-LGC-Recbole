@@ -71,8 +71,8 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
     best_valid_score, best_valid_result = trainer.fit(train_data)
 
     # Evaluation
-    results = trainer.evaluate(valid_data)
-    # results = trainer.evaluate(test_data)
+    # results = trainer.evaluate(valid_data)
+    results = trainer.evaluate(test_data)
     logger.info(results)
 
     print(results)
@@ -81,20 +81,22 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
 
 
 if __name__ == '__main__':
-    n_layers = [1, 2, 3, 4, 5]
-    learning_rates = [1e-4, 5e-4, 1e-3, 5e-3, 1e-2]
-    reg_weights = [1e-5, 1e-4, 1e-3, 1e-2]
+    for i in range(1, 4):
+        main(i, 1, 0.005, 0.01)
+    # n_layers = [1, 2, 3, 4, 5]
+    # learning_rates = [1e-4, 5e-4, 1e-3, 5e-3, 1e-2]
+    # reg_weights = [1e-5, 1e-4, 1e-3, 1e-2]
 
-    with open("base.txt", "a") as file:
-        for n_layer in n_layers:
-            for learning_rate in learning_rates:
-                for reg_weight in reg_weights:
-                    file.write('\n\n' + str(n_layer) + ' : ' +
-                               str(learning_rate) + ' : ' + str(reg_weight) + '\n')
+    # with open("base.txt", "a") as file:
+    #     for n_layer in n_layers:
+    #         for learning_rate in learning_rates:
+    #             for reg_weight in reg_weights:
+    #                 file.write('\n\n' + str(n_layer) + ' : ' +
+    #                            str(learning_rate) + ' : ' + str(reg_weight) + '\n')
 
-                    for i in range(1, 4):
-                        result = main(i, n_layer, learning_rate, reg_weight)
+    #                 for i in range(1, 4):
+    #                     result = main(i, n_layer, learning_rate, reg_weight)
 
-                        file.write(result + '\n')
+    #                     file.write(result + '\n')
 
-                    file.flush()
+    #                 file.flush()
