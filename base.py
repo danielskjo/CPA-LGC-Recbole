@@ -81,22 +81,24 @@ def main(exp_num, n_layer, learning_rate, reg_weight):
 
 
 if __name__ == '__main__':
-    for i in range(1, 4):
-        main(i, 1, 0.005, 0.01)
     # n_layers = [1, 2, 3, 4, 5]
     # learning_rates = [1e-4, 5e-4, 1e-3, 5e-3, 1e-2]
     # reg_weights = [1e-5, 1e-4, 1e-3, 1e-2]
 
-    # with open("base.txt", "a") as file:
-    #     for n_layer in n_layers:
-    #         for learning_rate in learning_rates:
-    #             for reg_weight in reg_weights:
-    #                 file.write('\n\n' + str(n_layer) + ' : ' +
-    #                            str(learning_rate) + ' : ' + str(reg_weight) + '\n')
+    n_layers = [1]
+    learning_rates = [5e-3, 1e-2]
+    reg_weights = [1e-2, 1e-4]
 
-    #                 for i in range(1, 4):
-    #                     result = main(i, n_layer, learning_rate, reg_weight)
+    with open("base.txt", "a") as file:
+        for n_layer in n_layers:
+            for learning_rate in learning_rates:
+                for reg_weight in reg_weights:
+                    file.write('\n\n' + str(n_layer) + ' : ' +
+                               str(learning_rate) + ' : ' + str(reg_weight) + '\n')
 
-    #                     file.write(result + '\n')
+                    for i in range(1, 4):
+                        result = main(i, n_layer, learning_rate, reg_weight)
 
-    #                 file.flush()
+                        file.write(result + '\n')
+
+                    file.flush()
